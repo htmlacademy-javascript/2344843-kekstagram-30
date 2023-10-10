@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [m4rk1z](https://up.htmlacademy.ru/javascript/30/user/2344843).
-* Наставник: `Неизвестно`.
+* Наставник: [Юрий Белобородов](https://htmlacademy.ru/profile/id514591).
 
 ---
 
