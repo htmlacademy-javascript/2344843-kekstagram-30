@@ -1,7 +1,7 @@
 //Функция для проверки длины строки
 let lengthCheckerString = (string, maxLength) => string.length <= maxLength;
 
-//Проверка палиндромности
+///Проверка палиндромности
 function palindrome(string) {
   return string.split('').reverse().join('') === string;
 }
