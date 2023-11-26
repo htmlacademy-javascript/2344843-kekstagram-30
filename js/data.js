@@ -55,5 +55,4 @@ function generatePhoto(id) {
 }
 
 const photos = Array.from({ length: 25 }, (_,i) => generatePhoto(i + 1));
-
 export {photos};

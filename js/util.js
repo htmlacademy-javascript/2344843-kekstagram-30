@@ -23,4 +23,7 @@ function getId (min, max) {
   };
 }
 
-export {getRandomElement, getId, getRandomInt};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+const isEnterKey = (evt) => evt.key === 'Enter';
+
+export {getRandomElement, getId, getRandomInt, isEnterKey, isEscapeKey};

@@ -5,6 +5,7 @@ const renderPictures = (data) => {
 
   data.forEach((picture) => {
     const pictureElement = pictureTemplate.cloneNode(true);
+    pictureElement.setAttribute('id', picture.id);
     pictureElement.querySelector('.picture__img').src = picture.url;
     pictureElement.querySelector('.picture__img').alt = picture.description;
     pictureElement.querySelector('.picture__likes').textContent = picture.likes;
