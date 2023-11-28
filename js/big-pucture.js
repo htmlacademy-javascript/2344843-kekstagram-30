@@ -101,4 +101,4 @@ picturesContainer.addEventListener('click', onMiniature);
 bigPictureCancel.addEventListener('click', closeBigPicture);
 commentsLoader.addEventListener('click', loadComments);
 
-export { saveData };
+export { saveData, photosData };
