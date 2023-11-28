@@ -1,10 +1,21 @@
-import {photos} from './data.js';
-import {renderPictures} from './miniature.js';
-import './big-pucture.js';
+import './data.js';
 import './img-upload.js';
 import './img-editor.js';
+import { saveData } from './big-pucture.js';
+import { setUserFormSubmit, hideModal } from './img-upload.js';
+import { renderPictures } from './miniature.js';
+import { getData } from './api.js';
+import { showAlert } from './alert.js';
 
-// Вывод массива фотографий
-window.console.log(photos);
+getData()
+  .then((data) => {
+    window.console.log(data);
+    renderPictures(data);
+    saveData(data);
+  })
+  .catch((error) => {
+    showAlert('data-error');
+    window.console.log(error);
+  });
 
-renderPictures(photos);
+setUserFormSubmit(hideModal);

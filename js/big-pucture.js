@@ -1,12 +1,15 @@
-import { photos } from './data.js';
 import { isEscapeKey } from './util.js';
 
 const COMMENTS_PER_PAGE = 5;
 
-const data = photos;
+let photosData = [];
+
+function saveData(data) {
+  photosData = data;
+}
+
 let comments = [];
 let currentIndex = 0;
-
 
 const picturesContainer = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
@@ -88,7 +91,7 @@ function onMiniature(evt) {
   if (evt.target.closest('.picture')) {
     evt.preventDefault();
     const targetId = evt.target.closest('.picture').id;
-    const picture = data.find((element) => element.id === Number(targetId));
+    const picture = photosData.find((element) => element.id === Number(targetId));
     openBigPicture();
     fillBigPicture(picture);
   }
@@ -97,3 +100,5 @@ function onMiniature(evt) {
 picturesContainer.addEventListener('click', onMiniature);
 bigPictureCancel.addEventListener('click', closeBigPicture);
 commentsLoader.addEventListener('click', loadComments);
+
+export { saveData };

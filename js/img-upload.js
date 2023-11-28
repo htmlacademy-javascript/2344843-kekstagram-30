@@ -1,4 +1,6 @@
 import { isEscapeKey } from './util.js';
+import { sendData } from './api.js';
+import { showAlert, isAlertOpen } from './alert.js';
 
 const HASHTAG_REGULAR_EXPRESSION = /^#[a-zа-яё0-9]{1,19}$/i;
 
@@ -11,7 +13,7 @@ const commentField = document.querySelector('.text__description');
 const imgUploadForm = document.querySelector('.img-upload__form');
 const effectLevel = document.querySelector('.img-upload__effect-level');
 const imgUploadPreview = document.querySelector('.img-upload__preview img');
-const scaleControlValue = document.querySelector('.scale__control--value');
+const submitButton = imgUploadForm.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -35,23 +37,17 @@ function hideModal() {
   imgUploadModal.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentEsc);
-  imgUploadInput.value = '';
 
   imgUploadPreview.style.removeProperty('transform');
-  scaleControlValue.value = '100%';
   imgUploadPreview.style.removeProperty('filter');
+  imgUploadInput.value = '';
+  imgUploadForm.reset();
 }
 
 function onDocumentEsc(evt) {
-  if (isEscapeKey(evt) && !isTextFieldFocused()) {
+  if (isEscapeKey(evt) && !isTextFieldFocused() && !isAlertOpen) {
     evt.preventDefault();
     hideModal();
-  }
-}
-
-function onFormSubmit(evt) {
-  if (!pristine.validate()) {
-    evt.preventDefault();
   }
 }
 
@@ -97,6 +93,34 @@ function checksHashtagsCount(value) {
   return arrayHashtags.length <= 5;
 }
 
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+};
+
+function setUserFormSubmit(onSuccess) {
+  imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(new FormData(evt.target))
+        .then(() => {
+          onSuccess();
+          showAlert('success');
+        })
+        .catch((error) => {
+          showAlert('error');
+          window.console.log(error);
+        })
+        .finally(unblockSubmitButton);
+    }
+  });
+}
 pristine.addValidator(commentField, validateCommentField, 'Длина комментария больше 140 символов', 1, false);
 pristine.addValidator(hashtagField, validateHashtagField, 'Хэш-тег должен начинаться с #, и иметь от 1 до 19 символов после #, хэш-теги должны быть разделены пробелом', 3, false);
 pristine.addValidator(hashtagField, checksHashtagsForRepetition, 'Хэш-теги не должны повторяться', 2, false);
@@ -104,4 +128,5 @@ pristine.addValidator(hashtagField, checksHashtagsCount, 'Превышено к�
 
 imgUploadInput.addEventListener('change', showModal);
 imgUploadCancel.addEventListener('click', hideModal);
-imgUploadForm.addEventListener('submit', onFormSubmit);
+
+export { setUserFormSubmit, hideModal };
