@@ -3,6 +3,7 @@ import { sendData } from './api.js';
 import { showAlert, isAlertOpen } from './alert.js';
 
 const HASHTAG_REGULAR_EXPRESSION = /^#[a-zа-яё0-9]{1,19}$/i;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const imgUploadModal = document.querySelector('.img-upload__overlay');
 const imgUploadInput = document.querySelector('.img-upload__input');
@@ -14,6 +15,7 @@ const imgUploadForm = document.querySelector('.img-upload__form');
 const effectLevel = document.querySelector('.img-upload__effect-level');
 const imgUploadPreview = document.querySelector('.img-upload__preview img');
 const submitButton = imgUploadForm.querySelector('.img-upload__submit');
+const effectsPreview = document.querySelectorAll('.effects__preview');
 
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -121,12 +123,27 @@ function setUserFormSubmit(onSuccess) {
     }
   });
 }
+
+function onChooseFile() {
+  if (this.files && this.files[0]) {
+    const file = this.files[0];
+    const fileName = file.name.toLowerCase();
+    const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+    if (matches) {
+      imgUploadPreview.src = URL.createObjectURL(file);
+      effectsPreview.forEach((element) => {
+        element.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
+      });
+      showModal();
+    }
+  }
+}
 pristine.addValidator(commentField, validateCommentField, 'Длина комментария больше 140 символов', 1, false);
 pristine.addValidator(hashtagField, validateHashtagField, 'Хэш-тег должен начинаться с #, и иметь от 1 до 19 символов после #, хэш-теги должны быть разделены пробелом', 3, false);
 pristine.addValidator(hashtagField, checksHashtagsForRepetition, 'Хэш-теги не должны повторяться', 2, false);
 pristine.addValidator(hashtagField, checksHashtagsCount, 'Превышено количество хэш-тегов, максимум 5', 1, false);
 
-imgUploadInput.addEventListener('change', showModal);
+imgUploadInput.addEventListener('change', onChooseFile);
 imgUploadCancel.addEventListener('click', hideModal);
 
 export { setUserFormSubmit, hideModal };
