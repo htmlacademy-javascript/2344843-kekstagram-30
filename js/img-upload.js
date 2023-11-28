@@ -9,6 +9,9 @@ const body = document.querySelector('body');
 const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
 const imgUploadForm = document.querySelector('.img-upload__form');
+const effectLevel = document.querySelector('.img-upload__effect-level');
+const imgUploadPreview = document.querySelector('.img-upload__preview img');
+const scaleControlValue = document.querySelector('.scale__control--value');
 
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -24,6 +27,8 @@ function showModal() {
   imgUploadModal.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentEsc);
+
+  effectLevel.classList.add('hidden');
 }
 
 function hideModal() {
@@ -31,6 +36,10 @@ function hideModal() {
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentEsc);
   imgUploadInput.value = '';
+
+  imgUploadPreview.style.removeProperty('transform');
+  scaleControlValue.value = '100%';
+  imgUploadPreview.style.removeProperty('filter');
 }
 
 function onDocumentEsc(evt) {
