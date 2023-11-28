@@ -44,6 +44,7 @@ function hideModal() {
   imgUploadPreview.style.removeProperty('filter');
   imgUploadInput.value = '';
   imgUploadForm.reset();
+  pristine.reset();
 }
 
 function onDocumentEsc(evt) {
@@ -62,7 +63,7 @@ function validateHashtagField(value) {
     return true;
   }
 
-  const hashtags = value.split(' ');
+  const hashtags = value.split(' ').filter(Boolean);
   let isValid = true;
 
   hashtags.forEach((element) => {
@@ -75,7 +76,7 @@ function validateHashtagField(value) {
 }
 
 function checksHashtagsForRepetition(value) {
-  const hashtags = value.split(' ');
+  const hashtags = value.split(' ').filter(Boolean);
   const newHashtags = [];
   let isValid = true;
 
@@ -91,7 +92,7 @@ function checksHashtagsForRepetition(value) {
 }
 
 function checksHashtagsCount(value) {
-  const arrayHashtags = value.split(' ');
+  const arrayHashtags = value.split(' ').filter(Boolean);
   return arrayHashtags.length <= 5;
 }
 
