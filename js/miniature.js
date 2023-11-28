@@ -1,4 +1,10 @@
+const picturesContainerElement = document.querySelector('.pictures');
+
 const renderPictures = (data) => {
+  const miniatures = picturesContainerElement.querySelectorAll('.picture');
+  miniatures.forEach((element) => {
+    element.remove();
+  });
   const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
   const picturesContainer = document.querySelector('.pictures');
   const fragment = document.createDocumentFragment();

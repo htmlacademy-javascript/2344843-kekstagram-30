@@ -23,7 +23,19 @@ function getId (min, max) {
   };
 }
 
+function getRandomArrayElement(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
 const isEscapeKey = (evt) => evt.key === 'Escape';
 const isEnterKey = (evt) => evt.key === 'Enter';
 
-export {getRandomElement, getId, getRandomInt, isEnterKey, isEscapeKey};
+export {getRandomElement, debounce, getRandomArrayElement, getId, getRandomInt, isEnterKey, isEscapeKey};

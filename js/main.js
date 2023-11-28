@@ -6,11 +6,13 @@ import { setUserFormSubmit, hideModal } from './img-upload.js';
 import { renderPictures } from './miniature.js';
 import { getData } from './api.js';
 import { showAlert } from './alert.js';
+import { showFilters } from './filter.js';
 
 getData()
   .then((data) => {
     window.console.log(data);
     renderPictures(data);
+    showFilters();
     saveData(data);
   })
   .catch((error) => {
