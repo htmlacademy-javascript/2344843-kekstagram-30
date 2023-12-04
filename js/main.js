@@ -1,4 +1,3 @@
-import './data.js';
 import './img-upload.js';
 import './img-editor.js';
 import { saveData } from './big-pucture.js';
@@ -10,14 +9,12 @@ import { showFilters } from './filter.js';
 
 getData()
   .then((data) => {
-    window.console.log(data);
     renderPictures(data);
     showFilters();
     saveData(data);
   })
-  .catch((error) => {
+  .catch(() => {
     showAlert('data-error');
-    window.console.log(error);
   });
 
 setUserFormSubmit(hideModal);

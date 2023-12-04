@@ -87,7 +87,7 @@ function createCommentElement(comment) {
   return сommentElement;
 }
 
-function onMiniature(evt) {
+function onMiniatureClick(evt) {
   if (evt.target.closest('.picture')) {
     evt.preventDefault();
     const targetId = evt.target.closest('.picture').id;
@@ -97,8 +97,17 @@ function onMiniature(evt) {
   }
 }
 
-picturesContainer.addEventListener('click', onMiniature);
-bigPictureCancel.addEventListener('click', closeBigPicture);
-commentsLoader.addEventListener('click', loadComments);
+
+function onOverlayCloseButton() {
+  closeBigPicture();
+}
+
+function onCommentsLoaderElement() {
+  loadComments();
+}
+
+picturesContainer.addEventListener('click', onMiniatureClick);
+bigPictureCancel.addEventListener('click', onOverlayCloseButton);
+commentsLoader.addEventListener('click', onCommentsLoaderElement);
 
 export { saveData, photosData };
