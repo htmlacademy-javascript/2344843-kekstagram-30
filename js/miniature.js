@@ -1,6 +1,6 @@
 const picturesContainerElement = document.querySelector('.pictures');
 
-const renderPictures = (data) => {
+function renderPictures(data) {
   const miniatures = picturesContainerElement.querySelectorAll('.picture');
   miniatures.forEach((element) => {
     element.remove();
@@ -20,6 +20,6 @@ const renderPictures = (data) => {
   });
 
   picturesContainer.appendChild(fragment);
-};
+}
 
 export { renderPictures };

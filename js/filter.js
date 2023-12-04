@@ -15,18 +15,18 @@ function showFilters() {
 }
 
 function getRandomArray(arr) {
-  const result = [];
+  const randomPictures = [];
   let count = RANDOM_ARRAY_ELEMENT_COUNT;
   if (count > arr.length) {
     count = arr.length;
   }
-  const tempArr = [...arr];
+  const tempElements = [...arr];
   for (let i = 0; i < count; i++) {
-    const randomElement = getRandomArrayElement(tempArr);
-    result.push(randomElement);
-    tempArr.splice(tempArr.indexOf(randomElement), 1);
+    const randomElement = getRandomArrayElement(tempElements);
+    randomPictures.push(randomElement);
+    tempElements.splice(tempElements.indexOf(randomElement), 1);
   }
-  return result;
+  return randomPictures;
 }
 
 function discussedPhotos(photoA, photoB) {
@@ -40,23 +40,7 @@ function getDiscussedArray(arr) {
   return arr.slice().sort(discussedPhotos);
 }
 
-function onFiltersButton(evt) {
-  if (evt.target.closest('.img-filters__button') || isEnterKey(evt)) {
-    switch (evt.target) {
-      case filterDefaultButton:
-        renderPictures(photosData);
-        break;
-      case filterRandomButton:
-        renderPictures(getRandomArray(photosData));
-        break;
-      case filterDiscussedButton:
-        renderPictures(getDiscussedArray(photosData));
-        break;
-    }
-  }
-}
-
-function mouseupFiltersButton(evt) {
+function onFiltersButtonMouseup(evt) {
   if (evt.target.closest('.img-filters__button') || isEnterKey(evt)) {
     const activeButton = filters.querySelector('.img-filters__button--active');
     activeButton.classList.remove('img-filters__button--active');
@@ -65,11 +49,30 @@ function mouseupFiltersButton(evt) {
   }
 }
 
-filters.addEventListener('click', debounce(
-  onFiltersButton,
-  RERENDER_DELAY,
-));
+function onFiltersButtonClick() {
+  return debounce(
+    (evt) => {
+      if (evt.target.closest('.img-filters__button') || isEnterKey(evt)) {
+        switch (evt.target) {
+          case filterDefaultButton:
+            renderPictures(photosData);
+            break;
+          case filterRandomButton:
+            renderPictures(getRandomArray(photosData));
+            break;
+          case filterDiscussedButton:
+            renderPictures(getDiscussedArray(photosData));
+            break;
+        }
+      }
+    },
+    RERENDER_DELAY,
+  );
+}
 
-filters.addEventListener('mouseup', mouseupFiltersButton);
+
+filters.addEventListener('click', onFiltersButtonClick());
+
+filters.addEventListener('mouseup', onFiltersButtonMouseup);
 
 export { showFilters };
